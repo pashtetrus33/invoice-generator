@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: invoice-generator
+
+
+app:
+  movistar:
+    inet:
+      embajada: "802381003"
+    mobile:
+      pdk: "125522030"
+      posol: "145195705"
+      stsovetnik: "128093371"
+    fijo:
+      8843: "802415642"
+      res_posol: "802411997"
+      res_kv: "802439648"
+
+
+server:
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true

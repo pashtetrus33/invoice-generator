@@ -7,15 +7,6 @@ WORKDIR /app
 # Копируем собранный JAR-файл в контейнер
 COPY target/*.jar app.jar
 
-# Устанавливаем шрифты (если нужно)
-RUN apk add --no-cache fontconfig ttf-dejavu && \
-    mkdir -p /usr/share/fonts/truetype/custom && \
-    apk add --no-cache msttcorefonts-installer && \
-    update-ms-fonts && \
-    fc-cache -f
-
-# Копируем кастомные шрифты (если используются)
-COPY src/main/resources/fonts/*.ttf /usr/share/fonts/truetype/custom/
 
 # Открываем порт, который использует приложение
 EXPOSE 8080
