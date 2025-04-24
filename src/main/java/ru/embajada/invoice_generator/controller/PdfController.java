@@ -1,6 +1,5 @@
 package ru.embajada.invoice_generator.controller;
 
-import ru.embajada.invoice_generator.dto.PdfData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import ru.embajada.invoice_generator.dto.PdfData;
 import ru.embajada.invoice_generator.service.PdfProcessingService;
 import ru.embajada.invoice_generator.utils.DateFormatUtils;
 import ru.embajada.invoice_generator.utils.HeaderUtils;
@@ -32,12 +32,14 @@ public class PdfController {
     @PostMapping("/process-pdf")
     public ResponseEntity<Resource> processPdf(@RequestParam("file") MultipartFile file) {
         try {
-            PdfData data = pdfProcessingService.extractDataFromPdf(file);
 
-            byte[] result = pdfProcessingService.fillTemplateWithData(data, file);
+            PdfData pdfData = pdfProcessingService.processPdf(file);
 
-            String rawFilename = DateFormatUtils.convertRussianMonthToNumeric(data.getIssueDate()) + "-" +
-                    data.getCompanyName() + "-" + data.getServiceName() + ".pdf";
+            byte[] result = pdfProcessingService.fillTemplateWithData(pdfData);
+
+            String fileName = pdfProcessingService.createFilename(pdfData);
+
+            String rawFilename = DateFormatUtils.convertRussianMonthToNumeric(fileName);
 
             ByteArrayResource resource = new ByteArrayResource(result);
 

@@ -1,26 +1,42 @@
 package ru.embajada.invoice_generator.utils;
 
+import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
+import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import ru.embajada.invoice_generator.dto.PdfData;
+
+import java.io.IOException;
 
 public class ValuesUtils {
 
-    public static String extractValue(String text, String key) {
+    public static String extractValue(String text, String key, String endKey) {
         // Ищем начало ключа
         int index = text.indexOf(key);
         if (index == -1) return "";
 
-        // Начало значения — сразу после ключа
+        // Начинаем сразу после ключа
         int start = index + key.length();
+        if (start >= text.length()) return "";
 
-        // Обрезаем часть текста начиная с позиции после ключа
+        // Обрезаем остаток текста после ключа
         String remainder = text.substring(start).stripLeading();
 
-        // Разбиваем остаток текста на строки
-        String[] lines = remainder.split("\\r?\\n");
+        if (endKey != null && !endKey.isBlank()) {
+            int endIndex = remainder.indexOf(endKey);
+            if (endIndex != -1) {
+                remainder = remainder.substring(0, endIndex).trim();
+            }
+        } else {
+            // Если нет endKey, берем только первую строку
+            String[] lines = remainder.split("\\r?\\n");
+            return lines.length > 0 ? lines[0].trim() : "";
+        }
 
-        // Первая строка после ключа — и есть нужное значение
-        return lines.length > 0 ? lines[0].trim() : "";
+        return remainder;
     }
+
+
+
+
 
     public static String parsePeriod(PdfData data) {
         if (data == null || data.getPeriod() == null || data.getPeriod().isBlank()) {
@@ -37,5 +53,14 @@ public class ValuesUtils {
         String to = DateFormatUtils.localizeMonth(parts[1].trim());
 
         return "C " + from + " по " + to;
+    }
+
+    public static void fillField(PDAcroForm form, String fieldName, String value) throws IOException {
+        PDField field = form.getField(fieldName);
+        if (field != null) {
+            field.setValue(value != null ? value : "");
+        } else {
+            System.out.println("Поле не найдено: " + fieldName);
+        }
     }
 }

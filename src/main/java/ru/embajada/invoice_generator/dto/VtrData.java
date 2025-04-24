@@ -1,21 +1,26 @@
 package ru.embajada.invoice_generator.dto;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class MovistarData {
-    private String companyName;
-    private String invoiceNumber;
-    private String issueDate;
+public class VtrData extends PdfData {
     private String dueDate;
-    private String period;
-    private String totalAmount;
-    private String netto;
-    private String nds;
     private String addService;
     private String saldoDate;
     private String serviceAmount;
     private String dolg;
-    private String clientCode;
-    private String serviceName;
+    private String lastPaymentDate;
+    private String lastPaymentAmount;
+    private String cortarDate;
+    private String totalServicios;
+    private String dopTv;
+    private String otroCargos;
+    private String totalOtroCargos;
+    private String totalSaldo;
+    private String montoNeto;
+    private String montoExento;
+    private String iva;
+    private String servicios;
 }

@@ -4,7 +4,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.springframework.stereotype.Component;
 import ru.embajada.invoice_generator.dto.MovistarData;
-import ru.embajada.invoice_generator.dto.PdfData;
+import ru.embajada.invoice_generator.dto.VtrData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,8 +13,8 @@ import java.io.IOException;
 import static ru.embajada.invoice_generator.utils.ValuesUtils.fillField;
 
 @Component
-public class MovistarFiller {
-    public byte[] fill(MovistarData data, File template) throws IOException {
+public class VtrFiller {
+    public byte[] fill(VtrData data, File template) throws IOException {
         try (PDDocument templateDoc = PDDocument.load(template)) {
             PDAcroForm form = templateDoc.getDocumentCatalog().getAcroForm();
 
@@ -31,15 +31,20 @@ public class MovistarFiller {
             fillField(form, "dueDate", data.getDueDate());
             fillField(form, "period", data.getPeriod());
             fillField(form, "serviceName", data.getServiceName());
-            fillField(form, "total", data.getTotalAmount());
+            fillField(form, "totalAmount", data.getTotalAmount());
             fillField(form, "netto", data.getNetto());
-            fillField(form, "nds", data.getNds());
-            fillField(form, "addService", data.getAddService());
-            fillField(form, "saldoDate", data.getSaldoDate());
-            fillField(form, "serviceAmount", data.getServiceAmount());
-            fillField(form, "dolg", data.getDolg());
             fillField(form, "clientCode", data.getClientCode());
+            fillField(form, "totalServicios", data.getTotalServicios());
+            fillField(form, "dopTv", data.getDopTv());
+            fillField(form, "otroCargos", data.getOtroCargos());
+            fillField(form, "totalOtroCargos", data.getTotalOtroCargos());
+            fillField(form, "totalSaldo", data.getTotalSaldo());
+            fillField(form, "totalServicios", data.getTotalServicios());
+            fillField(form, "neto", data.getMontoNeto());
+            fillField(form, "exento", data.getMontoExento());
+            fillField(form, "iva", data.getIva());
             fillField(form, "address", data.getAddress());
+            fillField(form, "servicios", data.getServicios());
 
 
             // Можно заблокировать поля, чтобы нельзя было редактировать в Acrobat

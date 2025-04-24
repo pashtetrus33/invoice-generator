@@ -3,8 +3,7 @@ package ru.embajada.invoice_generator.fillers;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.springframework.stereotype.Component;
-import ru.embajada.invoice_generator.dto.MovistarData;
-import ru.embajada.invoice_generator.dto.PdfData;
+import ru.embajada.invoice_generator.dto.MovistarMobileData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,8 +12,8 @@ import java.io.IOException;
 import static ru.embajada.invoice_generator.utils.ValuesUtils.fillField;
 
 @Component
-public class MovistarFiller {
-    public byte[] fill(MovistarData data, File template) throws IOException {
+public class MovistarMobileFiller {
+    public byte[] fill(MovistarMobileData data, File template) throws IOException {
         try (PDDocument templateDoc = PDDocument.load(template)) {
             PDAcroForm form = templateDoc.getDocumentCatalog().getAcroForm();
 
@@ -39,6 +38,18 @@ public class MovistarFiller {
             fillField(form, "serviceAmount", data.getServiceAmount());
             fillField(form, "dolg", data.getDolg());
             fillField(form, "clientCode", data.getClientCode());
+            fillField(form, "valorFijo", data.getValorFijo());
+            fillField(form, "desctoFijo", data.getDesctoFijo());
+            fillField(form, "totalFijo", data.getTotalFijo());
+            fillField(form, "valorLarga", data.getValorLarga());
+            fillField(form, "desctoLarga", data.getDesctoLarga());
+            fillField(form, "totalLarga", data.getTotalLarga());
+            fillField(form, "valorTotal", data.getValorTotal());
+            fillField(form, "desctoTotal", data.getDesctoTotal());
+            fillField(form, "totalTotal", data.getTotalTotal());
+            fillField(form, "indispServicio", "Отсутствие связи");
+            fillField(form, "totalIndispServicio", data.getTotalIndispServicio());
+            fillField(form, "address", data.getAddress());
 
 
             // Можно заблокировать поля, чтобы нельзя было редактировать в Acrobat

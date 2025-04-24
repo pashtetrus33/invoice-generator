@@ -15,6 +15,13 @@ app:
       8843: "802415642"
       res_posol: "802411997"
       res_kv: "802439648"
+  vtr:
+    inet:
+      ko: "67866501"
+      school: "64291852"
+    tv:
+      residence: "39949306"
+      embassy: "30956600"
 
 
 server:

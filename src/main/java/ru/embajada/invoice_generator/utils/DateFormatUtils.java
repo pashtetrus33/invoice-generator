@@ -43,18 +43,20 @@ public class DateFormatUtils {
      * Пример: "06-feb-2025" → "06-фев-2025"
      */
     public static String localizeMonth(String dateStr) {
-        if (dateStr == null) return null;
+        if (dateStr == null || dateStr.isEmpty()) return null;
 
-        String[] parts = dateStr.split("-");
-        if (parts.length != 3) return dateStr;
+        String[] parts = dateStr.split("[\\s\\-]+");
+        if (parts.length < 2 || parts.length > 3) return dateStr;
 
         String day = parts[0];
-        String monthEng = parts[1].toLowerCase();
-        String year = parts[2];
+        String month = parts[1].toLowerCase();
+        String year = parts.length == 3 ? parts[2] : "";
 
-        String monthRus = MONTH_MAP.getOrDefault(monthEng, monthEng);
+        String monthRus = MONTH_MAP.getOrDefault(month, month);
 
-        return String.format("%s-%s-%s", day, monthRus, year);
+        return parts.length == 3
+                ? String.format("%s-%s-%s", day, monthRus, year)
+                : String.format("%s %s", day, monthRus);
     }
 
     /**
